@@ -90,8 +90,8 @@
         async function get_connection_count() {
             const response = await fetch("https://dev.placede.flky.dev/users/count");
             const data = await response.json();
-            let bot_count = data.connections;
-            let websocket_connections = data.advertised_accounts;
+            let bot_count = data.advertised_accounts;
+            let websocket_connections = data.connections;
 
             return [bot_count, websocket_connections];
         }
