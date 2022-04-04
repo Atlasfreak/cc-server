@@ -59,16 +59,6 @@
         <div class="d-flex justify-content-center my-4">
             <div class="bg-black rounded p-4 image" style="width: fit-content;">
                 <div class="d-flex justify-content-center">
-                    <h2>Aktuelles Reddit Canvas:</h2>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <img class="w-100" id="reddit-canvas" src="data:image/png;base64," alt="Reddit r/place Canvas">
-                </div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-center my-4">
-            <div class="bg-black rounded p-4 image" style="width: fit-content;">
-                <div class="d-flex justify-content-center">
                     <h2>Aktuell falsche Pixel (Helle Pixel sind falsch):</h2>
                 </div>
                 <div class="d-flex justify-content-center">
@@ -114,10 +104,9 @@
         async function get_images() {
             const response = await fetch("https://placede.ml/pixel/get_images");
             const data = await response.json();
-            let reddit = data.reddit;
             let wrong = data.wrong;
             let config = data.config;
-            return [reddit, wrong, config];
+            return [wrong, config];
         }
 
         $(async function () {
@@ -130,9 +119,8 @@
             $("#mismatched-percentage").html(`${Number.parseFloat((pixel_amount[0] / pixel_amount[1]) * 100).toFixed(2)}%`);
 
             let images = await get_images();
-            $("#reddit-canvas").attr("src", "data:image/png;base64," + images[0]);
-            $("#wrong-canvas").attr("src", "data:image/png;base64," + images[1]);
-            $("#botted-canvas").attr("src", "data:image/png;base64," + images[2]);
+            $("#wrong-canvas").attr("src", "data:image/png;base64," + images[0]);
+            $("#botted-canvas").attr("src", "data:image/png;base64," + images[1]);
         });
 
         $("#switchIamgeBg").change(function (event) {
