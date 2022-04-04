@@ -132,16 +132,16 @@
             $("#reddit-canvas").attr("src", "data:image/png;base64," + images[0]);
             $("#wrong-canvas").attr("src", "data:image/png;base64," + images[1]);
             $("#botted-canvas").attr("src", "data:image/png;base64," + images[2]);
+        });
 
-            $("#switchIamgeBg").change(function (event) {
-                if (this.checked) {
-                    $(".image").addClass("bg-white text-black");
-                    $(".image").removeClass("bg-black");
-                } else {
-                    $(".image").addClass("bg-black");
-                    $(".image").removeClass("bg-white text-black");
-                }
-            });
+        $("#switchIamgeBg").change(function (event) {
+            if (this.checked) {
+                $(".image").addClass("bg-white text-black");
+                $(".image").removeClass("bg-black");
+            } else {
+                $(".image").addClass("bg-black");
+                $(".image").removeClass("bg-white text-black");
+            }
         });
     </script>
 </body>
