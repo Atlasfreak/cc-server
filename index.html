@@ -87,58 +87,46 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
-        function get_connection_count() {
-            let bot_count = 1000;
-            let websocket_connections = 100;
-            fetch("https://placede.ml/users/count").then(async (res) => {
-                const data = res.json();
+        async function get_connection_count() {
+            const response = await fetch("https://dev.placede.flky.dev/users/count");
+            const data = await response.json();
+            let bot_count = data.connections;
+            let websocket_connections = data.advertised_accounts;
 
-                bot_count = data.advertised_accounts;
-                websocket_connections = data.connections;
-            });
             return [bot_count, websocket_connections];
         }
 
-        function get_pixel_amount() {
-            let mismatched = 4000000;
-            let total = 2000 * 2000;
-            fetch("https://placede.ml/pixel/amount").then(async (res) => {
-                const data = res.json();
-
-                mismatched = data.mismatched;
-                total = data.all;
-            });
+        async function get_pixel_amount() {
+            const response = await fetch("https://dev.placede.flky.dev/pixel/amount");
+            const data = await response.json();
+            let mismatched = data.mismatched;
+            let total = data.all;
             return [mismatched, total];
         }
 
-        function get_images() {
-            let reddit = "";
-            let wrong = "";
-            let config = "";
-
-            fetch("https://placede.ml/pixel/get_images").then(async (res) => {
-                const data = res.json();
-
-                reddit = data.reddit;
-                wrong = data.wrong;
-                config = data.config;
-            });
+        async function get_images() {
+            const response = await fetch("https://dev.placede.flky.dev/pixel/get_images");
+            const data = await response.json();
+            let reddit = data.reddit;
+            let wrong = data.wrong;
+            let config = data.config;
             return [reddit, wrong, config];
         }
 
-        let connections = get_connection_count();
-        $("#bot-count > b").html(connections[0]);
-        $("#websocket-connections > b").html(connections[1]);
+        $(async function () {
+            let connections = await get_connection_count();
+            $("#bot-count > b").html(connections[0]);
+            $("#websocket-connections > b").html(connections[1]);
 
-        let pixel_amount = get_pixel_amount();
-        $("#mismatched-pixels").html(pixel_amount[0]);
-        $("#mismatched-percentage").html(`${Number.parseFloat((pixel_amount[0] / pixel_amount[1]) * 100).toFixed(2)}%`);
+            let pixel_amount = await get_pixel_amount();
+            $("#mismatched-pixels").html(pixel_amount[0]);
+            $("#mismatched-percentage").html(`${Number.parseFloat((pixel_amount[0] / pixel_amount[1]) * 100).toFixed(2)}%`);
 
-        let images = get_images();
-        $("#reddit-canvas").attr("src", "data:image/png;base64," + images[0]);
-        $("#wrong-canvas").attr("src", "data:image/png;base64," + images[1]);
-        $("#botted-canvas").attr("src", "data:image/png;base64," + images[2]);
-
+            let images = await get_images();
+            $("#reddit-canvas").attr("src", "data:image/png;base64," + images[0]);
+            $("#wrong-canvas").attr("src", "data:image/png;base64," + images[1]);
+            $("#botted-canvas").attr("src", "data:image/png;base64," + images[2]);
+        });
     </script>
 </body>
 
